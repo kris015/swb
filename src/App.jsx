@@ -86,9 +86,9 @@ function App() {
         <Route path="/:categoryName" element={<CategoryPage addToCart={addToCart} selectedCurrency={selectedCurrency} />} />
         <Route path="/product/:productId" element={<ProductPage addToCart={addToCart} selectedCurrency={selectedCurrency} />} />
         <Route 
-  path="/all" 
-  element={<CategoryPage addToCart={addToCart} selectedCurrency={selectedCurrency} />} 
-/>
+          path="/all" 
+          element={<CategoryPage addToCart={addToCart} selectedCurrency={selectedCurrency} />} 
+        />
       </Routes>
       {isCartOpen && (
         <CartOverlay 
