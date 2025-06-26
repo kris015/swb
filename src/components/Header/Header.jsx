@@ -1,5 +1,7 @@
+// src/components/Header/Header.jsx
+
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_CATEGORIES, GET_CURRENCIES } from '../../queries';
 import './styles.css';
@@ -16,7 +18,7 @@ function Header({ toggleCart, cartItems, selectedCurrency, setSelectedCurrency }
         {!categoriesLoading && categoriesData?.categories?.map(category => (
           <NavLink
             key={category.id}
-            to={category.name === 'all' ? '/' : `/category/${category.name}`}
+            to={`/category/${category.name}`} // <-- Promenjeno sa "/" na "/category/all"
             className={({ isActive }) => 
               `header-nav-link ${isActive ? 'active' : ''}`
             }

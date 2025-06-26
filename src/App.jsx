@@ -1,3 +1,5 @@
+// src/App.jsx
+
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header/Header';
@@ -15,31 +17,29 @@ function App() {
     setIsCartOpen(!isCartOpen);
   };
 
-const addToCart = (product, selectedAttributes) => {
-  setCartItems(prevItems => {
-    const existingItemIndex = prevItems.findIndex(item =>
-      item.product.id === product.id &&
-      JSON.stringify(item.selectedAttributes) === JSON.stringify(selectedAttributes)
-    );
+  const addToCart = (product, selectedAttributes) => {
+    setCartItems(prevItems => {
+      const existingItemIndex = prevItems.findIndex(item =>
+        item.product.id === product.id &&
+        JSON.stringify(item.selectedAttributes) === JSON.stringify(selectedAttributes)
+      );
 
-    if (existingItemIndex >= 0) {
-      // Kopija objekta unutar niza
-      const updatedItems = prevItems.map((item, index) => {
-        if (index === existingItemIndex) {
-          return {
-            ...item,
-            quantity: item.quantity + 1
-          };
-        }
-        return item;
-      });
-      return updatedItems;
-    } else {
-      return [...prevItems, { product, selectedAttributes, quantity: 1 }];
-    }
-  });
-};
-
+      if (existingItemIndex >= 0) {
+        const updatedItems = prevItems.map((item, index) => {
+          if (index === existingItemIndex) {
+            return {
+              ...item,
+              quantity: item.quantity + 1
+            };
+          }
+          return item;
+        });
+        return updatedItems;
+      } else {
+        return [...prevItems, { product, selectedAttributes, quantity: 1 }];
+      }
+    });
+  };
 
   const removeFromCart = (index) => {
     setCartItems(prevItems => {
@@ -64,7 +64,6 @@ const addToCart = (product, selectedAttributes) => {
 
   const placeOrder = async () => {
     try {
-      // Prepare products for order
       const orderProducts = cartItems.map(item => ({
         productId: item.product.id,
         quantity: item.quantity,
@@ -74,13 +73,6 @@ const addToCart = (product, selectedAttributes) => {
         }))
       }));
 
-      // Here you would call the CREATE_ORDER mutation
-      // await client.mutate({
-      //   mutation: CREATE_ORDER,
-      //   variables: { products: orderProducts }
-      // });
-
-      // For now, just log and clear cart
       console.log('Order placed:', orderProducts);
       setCartItems([]);
       setIsCartOpen(false);
@@ -100,7 +92,7 @@ const addToCart = (product, selectedAttributes) => {
       <div className={`page-overlay ${isCartOpen ? 'active' : ''}`} onClick={toggleCart}></div>
       <Routes>
         <Route 
-          path="/" 
+          path="/category/:categoryName" 
           element={
             <CategoryPage 
               addToCart={addToCart} 
@@ -109,7 +101,7 @@ const addToCart = (product, selectedAttributes) => {
           } 
         />
         <Route 
-          path="/category/:categoryName" 
+          path="/" 
           element={
             <CategoryPage 
               addToCart={addToCart} 
@@ -127,15 +119,18 @@ const addToCart = (product, selectedAttributes) => {
           } 
         />
       </Routes>
+
       {isCartOpen && (
-        <CartOverlay 
-          cartItems={cartItems} 
-          updateQuantity={updateQuantity} 
-          removeFromCart={removeFromCart}
-          placeOrder={placeOrder}
-          selectedCurrency={selectedCurrency}
-          toggleCart={toggleCart}
-        />
+        <div data-testid="cart-overlay">
+          <CartOverlay 
+            cartItems={cartItems} 
+            updateQuantity={updateQuantity} 
+            removeFromCart={removeFromCart}
+            placeOrder={placeOrder}
+            selectedCurrency={selectedCurrency}
+            toggleCart={toggleCart}
+          />
+        </div>
       )}
     </div>
   );
