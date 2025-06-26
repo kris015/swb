@@ -1,0 +1,98 @@
+.category-page {
+  padding: 2rem;
+}
+
+.category-title {
+  text-transform: capitalize;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.product-page {
+  display: flex;
+  padding: 2rem;
+  gap: 3rem;
+}
+
+.product-gallery-container {
+  flex: 1;
+}
+
+.product-info {
+  flex: 1;
+  max-width: 400px;
+}
+
+.product-info h2 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.product-info h1 {
+  font-weight: 400;
+  margin-bottom: 2rem;
+}
+
+.price-section {
+  margin: 2rem 0;
+}
+
+.price-section h3 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.add-to-cart {
+  width: 100%;
+  padding: 1rem;
+  background-color: #5ece7b;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+
+.add-to-cart:hover {
+  background-color: #4ebd6b;
+}
+
+.add-to-cart.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.product-description {
+  line-height: 1.6;
+}
+
+.product-description h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-description p {
+  margin-bottom: 1rem;
+}
+
+.product-description ul {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.product-description li {
+  margin-bottom: 0.5rem;
+}
