@@ -20,7 +20,7 @@ function Header({ toggleCart, cartItems, selectedCurrency, setSelectedCurrency }
   className={({ isActive }) => 
     `header-nav-link ${isActive ? 'active' : ''}`
   }
-  data-testid={category.name === 'all' ? 'category-link' : 'active-category-link'}
+  data-testid={isActive ? "category-link active-category-link" : "category-link"}
 >
   {category.name}
 </NavLink>
