@@ -1,7 +1,5 @@
-// src/components/Header/Header.jsx
-
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_CATEGORIES, GET_CURRENCIES } from '../../queries';
 import './styles.css';
@@ -18,15 +16,14 @@ function Header({ toggleCart, cartItems, selectedCurrency, setSelectedCurrency }
         {!categoriesLoading && categoriesData?.categories?.map(category => (
           <NavLink
             key={category.id}
-            to={category.name === 'all' ? '/all' : `/category/${category.name}`}
-            className={({ isActive }) =>
+            to={category.name === 'all' ? '/' : `/category/${category.name}`}
+            className={({ isActive }) => 
               `header-nav-link ${isActive ? 'active' : ''}`
             }
             data-testid={category.name === 'all' ? 'category-link' : 'active-category-link'}
           >
             {category.name}
           </NavLink>
-
         ))}
       </nav>
       <div className="header-logo">
