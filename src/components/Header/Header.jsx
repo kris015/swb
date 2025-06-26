@@ -16,7 +16,7 @@ function Header({ toggleCart, cartItems, selectedCurrency, setSelectedCurrency }
         {!categoriesLoading && categoriesData?.categories?.map(category => (
           <NavLink
             key={category.id}
-            to={category.name === 'all' ? '/' : `/${category.name}`}
+            to={category.name === 'all' ? '/' : `/category/${category.name}`}
             className={({ isActive }) => 
               `header-nav-link ${isActive ? 'active' : ''}`
             }
