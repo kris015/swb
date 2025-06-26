@@ -5,53 +5,57 @@ function CartItem({ item, index, updateQuantity, removeFromCart, selectedCurrenc
   const { product, selectedAttributes, quantity } = item;
   const price = product.prices.find(p => p.currency.label === selectedCurrency);
 
+  const decrease = () => {
+    if (quantity > 1) {
+      updateQuantity(index, quantity - 1);
+    } else {
+      removeFromCart(index);
+    }
+  };
+
+  const increase = () => {
+    updateQuantity(index, quantity + 1);
+  };
+
   return (
-    <div className="cart-item">
-      <div className="cart-item-info">
+    <div className="cart-item" data-testid={`cart-item-attribute-${product.id}`}>
+      <img src={product.gallery[0]} alt={product.name} />
+      <div className="cart-item-details">
         <h4>{product.brand}</h4>
         <h3>{product.name}</h3>
-        <div className="cart-item-price">
-          {price && `${price.currency.symbol}${price.amount.toFixed(2)}`}
-        </div>
-        <div className="cart-item-attributes">
-          {product.attributes.map(attr => (
+
+        {/* Prikaz svakog izabranog atributa sa tačnim data-testid */}
+        {Object.entries(selectedAttributes).map(([attrId, itemId], i) => {
+          const attribute = product.attributes.find(attr => attr.id === parseInt(attrId));
+          const selectedItem = attribute?.items.find(item => item.id === parseInt(itemId));
+
+          if (!attribute || !selectedItem) return null;
+
+          const attributeName = attribute.name.toLowerCase().replace(/\s+/g, '-');
+          const displayValue = selectedItem.displayValue.toLowerCase().replace(/\s+/g, '-');
+
+          return (
             <div 
-              key={attr.id}
-              className="cart-item-attribute"
-              data-testid={`cart-item-attribute-${attr.name.toLowerCase().replace(' ', '-')}`}
+              key={i}
+              data-testid={`cart-item-attribute-${attributeName}-${displayValue}-selected`}
             >
-              <h5>{attr.name}:</h5>
-              {attr.type === 'swatch' ? (
+              {attribute.type === 'swatch' ? (
                 <div 
                   className="color-swatch"
-                  style={{ backgroundColor: attr.items.find(i => i.id === selectedAttributes[attr.id])?.value }}
+                  style={{ backgroundColor: selectedItem.value }}
                 ></div>
               ) : (
-                <div className="attribute-value">
-                  {attr.items.find(i => i.id === selectedAttributes[attr.id])?.displayValue}
-                </div>
+                <span>{selectedItem.displayValue}</span>
               )}
             </div>
-          ))}
+          );
+        })}
+
+        <div className="quantity-controls">
+          <button data-testid="cart-item-amount-decrease" onClick={decrease}>-</button>
+          <span data-testid="cart-item-amount">{quantity}</span>
+          <button data-testid="cart-item-amount-increase" onClick={increase}>+</button>
         </div>
-      </div>
-      <div className="cart-item-quantity">
-        <button 
-          onClick={() => updateQuantity(index, quantity + 1)}
-          data-testid="cart-item-amount-increase"
-        >
-          +
-        </button>
-        <span data-testid="cart-item-amount">{quantity}</span>
-        <button 
-          onClick={() => updateQuantity(index, quantity - 1)}
-          data-testid="cart-item-amount-decrease"
-        >
-          -
-        </button>
-      </div>
-      <div className="cart-item-image">
-        <img src={product.gallery[0]} alt={product.name} />
       </div>
     </div>
   );
