@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './styles.css';
 
 function ProductAttributes({ attributes, selectedAttributes, onAttributeChange }) {
@@ -7,31 +7,33 @@ function ProductAttributes({ attributes, selectedAttributes, onAttributeChange }
       {attributes.map(attribute => (
         <div 
           key={attribute.id}
-          className="attribute"
-          data-testid={`product-attribute-${attribute.name.toLowerCase().replace(' ', '-')}`}
+          data-testid={`product-attribute-${attribute.name.toLowerCase().replace(/\s+/g, '-')}`}
         >
           <h4>{attribute.name}:</h4>
           <div className="attribute-options">
-            {attribute.items.map(item => (
-              attribute.type === 'swatch' ? (
+            {attribute.items.map(item => {
+              const displayValue = item.displayValue || item.value;
+              const isSelected = selectedAttributes[attribute.id] === item.id;
+
+              return attribute.type === 'swatch' ? (
                 <div
                   key={item.id}
-                  className={`swatch ${selectedAttributes[attribute.id] === item.id ? 'selected' : ''}`}
+                  className={`swatch ${isSelected ? 'selected' : ''}`}
                   style={{ backgroundColor: item.value }}
                   onClick={() => onAttributeChange(attribute.id, item.id)}
-                  data-testid={`product-attribute-${attribute.name.toLowerCase().replace(' ', '-')}-${item.displayValue.toLowerCase().replace(' ', '-')}${selectedAttributes[attribute.id] === item.id ? '-selected' : ''}`}
+                  data-testid={`product-attribute-${attribute.name.toLowerCase().replace(/\s+/g, '-')}-${displayValue.toLowerCase().replace(/\s+/g, '-')}${isSelected ? '-selected' : ''}`}
                 ></div>
               ) : (
                 <button
                   key={item.id}
-                  className={`text-option ${selectedAttributes[attribute.id] === item.id ? 'selected' : ''}`}
+                  className={`text-option ${isSelected ? 'selected' : ''}`}
                   onClick={() => onAttributeChange(attribute.id, item.id)}
-                  data-testid={`product-attribute-${attribute.name.toLowerCase().replace(' ', '-')}-${item.displayValue.toLowerCase().replace(' ', '-')}${selectedAttributes[attribute.id] === item.id ? '-selected' : ''}`}
+                  data-testid={`product-attribute-${attribute.name.toLowerCase().replace(/\s+/g, '-')}-${displayValue.toLowerCase().replace(/\s+/g, '-')}${isSelected ? '-selected' : ''}`}
                 >
-                  {item.displayValue}
+                  {displayValue}
                 </button>
-              )
-            ))}
+              );
+            })}
           </div>
         </div>
       ))}
