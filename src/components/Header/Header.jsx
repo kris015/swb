@@ -1,10 +1,12 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_CATEGORIES, GET_CURRENCIES } from '../../queries';
 import './styles.css';
 
 function Header({ toggleCart, cartItems, selectedCurrency, setSelectedCurrency }) {
+  const location = useLocation();
   const { loading: categoriesLoading, data: categoriesData } = useQuery(GET_CATEGORIES);
   const { loading: currenciesLoading, data: currenciesData = {} } = useQuery(GET_CURRENCIES);
 
@@ -13,20 +15,25 @@ function Header({ toggleCart, cartItems, selectedCurrency, setSelectedCurrency }
   return (
     <header className="header">
       <nav className="header-nav">
-        {!categoriesLoading && categoriesData?.categories?.map(category => (
-          <NavLink
-            key={category.id}
-            to={`/${category.name === 'all' ? 'all' : category.name}`}
-            className={({ isActive }) => 
-              `header-nav-link ${isActive ? 'active' : ''}`
-            }
-            data-testid={({ isActive }) =>
-              isActive ? "active-category-link" : "category-link"
-            }
-          >
-            {category.name}
-          </NavLink>
-        ))}
+        {!categoriesLoading && categoriesData?.categories?.map(category => {
+          const path = `/${category.name === 'all' ? 'all' : category.name}`;
+          const isActive = 
+            (category.name === 'all' && (location.pathname === '/' || location.pathname === '/all')) ||
+            location.pathname === `/${category.name}`;
+
+          return (
+            <NavLink
+              key={category.id}
+              to={path}
+              className={({ isActive }) => 
+                `header-nav-link ${isActive ? 'active' : ''}`
+              }
+              data-testid={isActive ? 'active-category-link' : 'category-link'}
+            >
+              {category.name}
+            </NavLink>
+          );
+        })}
       </nav>
 
       <div className="header-logo">
