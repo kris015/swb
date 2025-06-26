@@ -18,14 +18,15 @@ function Header({ toggleCart, cartItems, selectedCurrency, setSelectedCurrency }
         {!categoriesLoading && categoriesData?.categories?.map(category => (
           <NavLink
             key={category.id}
-            to={`/category/${category.name}`} // <-- Promenjeno sa "/" na "/category/all"
-            className={({ isActive }) => 
+            to={category.name === 'all' ? '/all' : `/category/${category.name}`}
+            className={({ isActive }) =>
               `header-nav-link ${isActive ? 'active' : ''}`
             }
             data-testid={category.name === 'all' ? 'category-link' : 'active-category-link'}
           >
             {category.name}
           </NavLink>
+
         ))}
       </nav>
       <div className="header-logo">
