@@ -13,22 +13,30 @@ function Header({ toggleCart, cartItems, selectedCurrency, setSelectedCurrency }
   return (
     <header className="header">
       <nav className="header-nav">
-       {!categoriesLoading && categoriesData?.categories?.map(category => (
-  <NavLink
-    key={category.id}
-    to={`/${category.name === 'all' ? 'all' : category.name}`}
-    className={({ isActive }) => 
-      `header-nav-link ${isActive ? 'active' : ''}`
-    }
-    data-testid={category.name === 'all' ? 'category-link' : 'active-category-link'}
-  >
-    {category.name}
-  </NavLink>
-))}
+        {!categoriesLoading && categoriesData?.categories?.map(category => {
+          const isActiveCategory = category.name === 'all'
+            ? window.location.pathname === '/' || window.location.pathname === '/all'
+            : window.location.pathname === `/${category.name}`;
+
+          return (
+            <NavLink
+              key={category.id}
+              to={`/${category.name === 'all' ? 'all' : category.name}`}
+              className={({ isActive }) => 
+                `header-nav-link ${isActive ? 'active' : ''}`
+              }
+              data-testid={isActiveCategory ? 'active-category-link' : 'category-link'}
+            >
+              {category.name}
+            </NavLink>
+          );
+        })}
       </nav>
+
       <div className="header-logo">
         <Link to="/">Scandiweb Store</Link>
       </div>
+
       <div className="header-actions">
         {!currenciesLoading && currenciesData?.currencies && (
           <select 
@@ -43,6 +51,7 @@ function Header({ toggleCart, cartItems, selectedCurrency, setSelectedCurrency }
             ))}
           </select>
         )}
+
         <button 
           className="cart-button" 
           onClick={toggleCart}
