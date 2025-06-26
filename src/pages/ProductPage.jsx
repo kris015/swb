@@ -27,7 +27,6 @@ function ProductPage({ addToCart, selectedCurrency }) {
   };
 
   const handleAddToCart = () => {
-    // Check if all attributes are selected
     const allAttributesSelected = product.attributes.every(
       attr => selectedAttributes[attr.id] !== undefined
     );
@@ -42,19 +41,28 @@ function ProductPage({ addToCart, selectedCurrency }) {
 
   return (
     <div className="product-page">
-      <div className="product-gallery-container">
+      <div 
+        className="product-gallery-container" 
+        data-testid="product-gallery"
+      >
         <ProductGallery images={product.gallery} />
       </div>
       <div className="product-info">
         <h2>{product.brand}</h2>
         <h1>{product.name}</h1>
-        {product.attributes.length > 0 && (
-          <ProductAttributes
-            attributes={product.attributes}
-            selectedAttributes={selectedAttributes}
-            onAttributeChange={handleAttributeChange}
-          />
-        )}
+        {product.attributes.length > 0 && product.attributes.map(attr => (
+          <div 
+            key={attr.id} 
+            data-testid={`product-attribute-${attr.name.toLowerCase().replace(/\s+/g, '-')}`}
+          >
+            <h4>{attr.name}</h4>
+            <ProductAttributes
+              attributes={attr}
+              selectedAttributes={selectedAttributes}
+              onAttributeChange={handleAttributeChange}
+            />
+          </div>
+        ))}
         <div className="price-section">
           <h3>Price:</h3>
           <div className="price">
