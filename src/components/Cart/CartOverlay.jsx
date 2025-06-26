@@ -11,7 +11,7 @@ function CartOverlay({ cartItems, updateQuantity, removeFromCart, placeOrder, se
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   return (
-    <div className="cart-overlay" data-testid="cart-overlay"> {/* Dodato data-testid */}
+    <div className="cart-overlay" data-testid="cart-overlay">
       <div className="cart-header">
         <h3>My Bag</h3>
         <span>{totalItems} {totalItems === 1 ? 'Item' : 'Items'}</span>
