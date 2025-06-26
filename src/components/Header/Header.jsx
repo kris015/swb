@@ -15,15 +15,15 @@ function Header({ toggleCart, cartItems, selectedCurrency, setSelectedCurrency }
       <nav className="header-nav">
         {!categoriesLoading && categoriesData?.categories?.map(category => (
           <NavLink
-  key={category.id}
-  to={`/${category.name === 'all' ? '' : category.name}`}
-  className={({ isActive }) => 
-    `header-nav-link ${isActive ? 'active' : ''}`
-  }
-  data-testid={category.name === 'all' ? 'category-link' : 'active-category-link'}
->
-  {category.name}
-</NavLink>
+            key={category.id}
+            to={category.name === 'all' ? '/' : `/${category.name}`}
+            className={({ isActive }) => 
+              `header-nav-link ${isActive ? 'active' : ''}`
+            }
+            data-testid={category.name === 'all' ? 'category-link' : 'active-category-link'}
+          >
+            {category.name}
+          </NavLink>
         ))}
       </nav>
       <div className="header-logo">
