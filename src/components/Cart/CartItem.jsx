@@ -24,7 +24,7 @@ function CartItem({ item, index, updateQuantity, removeFromCart, selectedCurrenc
         <h4>{product.brand}</h4>
         <h3>{product.name}</h3>
 
-        {/* Prikaz svih selektovanih atributa sa tačnim data-testid */}
+        {/* Prikaz svakog izabranog atributa sa tačnim data-testid */}
         {Object.entries(selectedAttributes).map(([attrId, itemId], i) => {
           const attribute = product.attributes.find(attr => attr.id === parseInt(attrId));
           const selectedItem = attribute?.items.find(item => item.id === parseInt(itemId));
@@ -51,24 +51,10 @@ function CartItem({ item, index, updateQuantity, removeFromCart, selectedCurrenc
           );
         })}
 
-        <div className="price">
-          {price && `${price.currency.symbol}${(price.amount * quantity).toFixed(2)}`}
-        </div>
-
         <div className="quantity-controls">
-          <button 
-            data-testid="cart-item-amount-decrease" 
-            onClick={decrease}
-          >
-            -
-          </button>
+          <button data-testid="cart-item-amount-decrease" onClick={decrease}>-</button>
           <span data-testid="cart-item-amount">{quantity}</span>
-          <button 
-            data-testid="cart-item-amount-increase" 
-            onClick={increase}
-          >
-            +
-          </button>
+          <button data-testid="cart-item-amount-increase" onClick={increase}>+</button>
         </div>
       </div>
     </div>
