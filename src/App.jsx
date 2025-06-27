@@ -30,6 +30,8 @@ function App() {
         return [...prevItems, { product, selectedAttributes, quantity: 1 }];
       }
     });
+    // Dodaj ovo da automatski otvoriš korpu
+  setIsCartOpen(true);
   };
 
   const removeFromCart = (index) => {
