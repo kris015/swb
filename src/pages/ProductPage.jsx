@@ -40,6 +40,10 @@ function ProductPage({ addToCart, selectedCurrency }) {
     addToCart(product, selectedAttributes);
   };
 
+  // Proveravamo da li su svi atributi izabrani
+  const allAttributesSelected = product.attributes.length === 0 || 
+    product.attributes.every(attr => selectedAttributes[attr.id] !== undefined);
+
   return (
     <div className="product-page">
       <div className="product-gallery-container">
@@ -62,9 +66,9 @@ function ProductPage({ addToCart, selectedCurrency }) {
           </div>
         </div>
         <button
-          className={`add-to-cart ${!product.inStock ? 'disabled' : ''}`}
+          className={`add-to-cart ${!product.inStock || !allAttributesSelected ? 'disabled' : ''}`}
           onClick={handleAddToCart}
-          disabled={!product.inStock}
+          disabled={!product.inStock || !allAttributesSelected}
           data-testid="add-to-cart"
         >
           {product.inStock ? 'Add to Cart' : 'Out of Stock'}

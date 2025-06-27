@@ -17,8 +17,11 @@ function ProductAttributes({ attributes, selectedAttributes, onAttributeChange }
                 const displayValue = item.displayValue || item.value;
                 const isSelected = selectedAttributes[attribute.id] === item.id;
 
-                // Format za data-testid
-                const testIdBase = `product-attribute-${attributeName}-${displayValue.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}`;
+                // Format za data-testid - koristimo originalne vrednosti bez modifikacija
+                const testIdBase = attribute.type === 'swatch' 
+                  ? `product-attribute-color-${item.value}` // Za boje koristimo value
+                  : `product-attribute-${attributeName}-${displayValue}`;
+
                 const testId = isSelected ? `${testIdBase}-selected` : testIdBase;
 
                 return attribute.type === 'swatch' ? (
