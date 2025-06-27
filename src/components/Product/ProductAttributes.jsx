@@ -1,3 +1,5 @@
+// src/components/Product/ProductAttributes.jsx
+
 import React from 'react';
 import './styles.css';
 
@@ -14,11 +16,12 @@ function ProductAttributes({ attributes, selectedAttributes, onAttributeChange }
             <h4>{attribute.name}:</h4>
             <div className="attribute-options">
               {attribute.items.map(item => {
+                // Koristi originalnu vrednost za testId (sa # ako postoji)
                 const displayValue = item.displayValue || item.value;
                 const isSelected = selectedAttributes[attribute.id] === item.id;
 
-                // Format za data-testid
-                const testIdBase = `product-attribute-${attributeName}-${displayValue.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}`;
+                // Održavamo tačno ono što API šalje, sa svim karakterima
+                const testIdBase = `product-attribute-${attributeName}-${displayValue}`;
                 const testId = isSelected ? `${testIdBase}-selected` : testIdBase;
 
                 return attribute.type === 'swatch' ? (
