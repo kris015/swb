@@ -15,22 +15,26 @@ function App() {
     setIsCartOpen(!isCartOpen);
   };
 
-  const addToCart = (product, selectedAttributes) => {
-    setCartItems(prevItems => {
-      const existingItemIndex = prevItems.findIndex(item =>
-        item.product.id === product.id &&
-        JSON.stringify(item.selectedAttributes) === JSON.stringify(selectedAttributes)
-      );
+  // U App.jsx, izmenite funkciju addToCart:
+const addToCart = (product, selectedAttributes) => {
+  setCartItems(prevItems => {
+    const existingItemIndex = prevItems.findIndex(item =>
+      item.product.id === product.id &&
+      JSON.stringify(item.selectedAttributes) === JSON.stringify(selectedAttributes)
+    );
 
-      if (existingItemIndex >= 0) {
-        const updatedItems = [...prevItems];
-        updatedItems[existingItemIndex].quantity += 1;
-        return updatedItems;
-      } else {
-        return [...prevItems, { product, selectedAttributes, quantity: 1 }];
-      }
-    });
-  };
+    if (existingItemIndex >= 0) {
+      const updatedItems = [...prevItems];
+      updatedItems[existingItemIndex].quantity += 1;
+      return updatedItems;
+    } else {
+      return [...prevItems, { product, selectedAttributes, quantity: 1 }];
+    }
+  });
+  
+  // Automatski otvaranje korpe nakon dodavanja proizvoda
+  setIsCartOpen(true);
+};
 
   const removeFromCart = (index) => {
     setCartItems(prevItems => {

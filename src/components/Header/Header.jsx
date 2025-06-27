@@ -56,15 +56,15 @@ function Header({ toggleCart, cartItems, selectedCurrency, setSelectedCurrency }
         )}
 
         <button 
-          className="cart-button" 
-          onClick={toggleCart}
-          data-testid="cart-btn"
-        >
-          🛒
-          {totalItems > 0 && (
-            <span className="cart-badge">{totalItems}</span>
-          )}
-        </button>
+  className="cart-button" 
+  onClick={toggleCart}
+  data-testid="cart-btn"
+>
+  🛒
+  {totalItems > 0 && (
+    <span className="cart-badge" data-testid="cart-badge">{totalItems}</span>
+  )}
+</button>
       </div>
     </header>
   );
