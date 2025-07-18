@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+import parse from 'html-react-parser';
 import ProductGallery from '../components/Product/ProductGallery';
 import ProductAttributes from '../components/Product/ProductAttributes';
 import { GET_PRODUCT } from '../queries';
@@ -27,7 +28,6 @@ function ProductPage({ addToCart, selectedCurrency }) {
   };
 
   const handleAddToCart = () => {
-    // Check if all attributes are selected
     const allAttributesSelected = product.attributes.every(
       attr => selectedAttributes[attr.id] !== undefined
     );
@@ -40,7 +40,6 @@ function ProductPage({ addToCart, selectedCurrency }) {
     addToCart(product, selectedAttributes);
   };
 
-  // Proveravamo da li su svi atributi izabrani
   const allAttributesSelected = product.attributes.length === 0 || 
     product.attributes.every(attr => selectedAttributes[attr.id] !== undefined);
 
@@ -75,9 +74,10 @@ function ProductPage({ addToCart, selectedCurrency }) {
         </button>
         <div 
           className="product-description" 
-          dangerouslySetInnerHTML={{ __html: product.description }}
           data-testid="product-description"
-        ></div>
+        >
+          {parse(product.description)}
+        </div>
       </div>
     </div>
   );
