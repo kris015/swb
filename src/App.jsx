@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { CREATE_ORDER } from './queries';
 import Header from './components/Header/Header';
 import CategoryPage from './pages/CategoryPage';
 import ProductPage from './pages/ProductPage';
@@ -10,6 +12,7 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
+  const [createOrder] = useMutation(CREATE_ORDER);
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
@@ -30,8 +33,7 @@ function App() {
         return [...prevItems, { product, selectedAttributes, quantity: 1 }];
       }
     });
-    // Dodaj ovo da automatski otvoriš korpu
-  setIsCartOpen(true);
+    setIsCartOpen(true);
   };
 
   const removeFromCart = (index) => {
@@ -66,11 +68,18 @@ function App() {
         }))
       }));
 
-      console.log('Order placed:', orderProducts);
-      setCartItems([]);
-      setIsCartOpen(false);
+      const { data } = await createOrder({
+        variables: { products: orderProducts }
+      });
+
+      if (data.createOrder) {
+        setCartItems([]);
+        setIsCartOpen(false);
+        alert('Order placed successfully!');
+      }
     } catch (error) {
       console.error('Error placing order:', error);
+      alert('Failed to place order. Please try again.');
     }
   };
 
